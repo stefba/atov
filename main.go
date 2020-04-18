@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"log"
-	"text/template"
+	"net/http"
 	"os"
 	"os/exec"
 	"strings"
+	"text/template"
 	"time"
 )
 
@@ -33,7 +33,7 @@ func front(w http.ResponseWriter, r *http.Request) {
 }
 
 func tmp(w http.ResponseWriter, r *http.Request) {
-	p := "." + r.URL.Path 
+	p := "." + r.URL.Path
 	log.Println(p)
 	http.ServeFile(w, r, p)
 }
@@ -60,20 +60,20 @@ func back(w http.ResponseWriter, r *http.Request) {
 
 func saveFile(r *http.Request) (string, error) {
 	file, handler, err := r.FormFile("file")
-    if err != nil {
+	if err != nil {
 		return "", err
-    }
-    defer file.Close()
+	}
+	defer file.Close()
 
 	t, err := time.Parse("2006-01-02 15.04.05.mp3", handler.Filename)
 	if err != nil {
 		return "", err
 	}
 
-    b, err := ioutil.ReadAll(file)
-    if err != nil {
+	b, err := ioutil.ReadAll(file)
+	if err != nil {
 		return "", err
-    }
+	}
 
 	path := "./tmp/" + t.Format("200102_150405.mp3")
 
@@ -86,6 +86,6 @@ func convertAudio(path string) (string, error) {
 	return string(out), err
 }
 
-func mp4Ext(path string) (string) {
+func mp4Ext(path string) string {
 	return strings.Replace(path, ".mp3", ".mp4", -1)
 }
